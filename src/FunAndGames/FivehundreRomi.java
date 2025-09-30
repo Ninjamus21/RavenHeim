@@ -57,8 +57,13 @@ public class FivehundreRomi {
         return deck;
     }
 
-    public static void dealCards() {
-
+    public static void dealCards(int[] deck) {
+        ArrayList<Integer> player1Hand = new ArrayList<>();
+        ArrayList<Integer> player2Hand = new ArrayList<>();
+        for (int i = 0; i < 7; i++) {
+            player1Hand.add(i); // placeholder
+            player2Hand.add(i + 7); // placeholder
+        }
     }
 
     public static int playerturn(int playerScore, Scanner scanner, int[] deck) {
@@ -74,7 +79,7 @@ public class FivehundreRomi {
                 break;
             } else if (choice == 2) {
                 System.out.println("you drew from discard pile" + ANSI_GREEN + "Placeholdercard" + ANSI_RESET);
-break;
+                break;
             } else if (choice == 3) {
                 if (discardPile.isEmpty()) {
                     System.out.println("Discard pile is empty. Please choose another option.");
