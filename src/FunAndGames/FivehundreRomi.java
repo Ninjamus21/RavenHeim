@@ -28,13 +28,13 @@ public class FivehundreRomi {
         System.out.println("Welcome to 500 Rummy!");
         boolean gameOver = false;
         while (!gameOver) {
-            player1Score = playerturn(player1Score, scanner, deck, player1Hand);
+            player1Score = playerturn("player1", player1Score, scanner, deck, player1Hand);
             player1Score = calculateScore(player1Hand);
             if (player1Score >= WINNINGSCORE) {
                 System.out.println("Player 1 wins!");
                 break;
             }
-            player2Score = playerturn(player2Score, scanner, deck, player2Hand);
+            player2Score = playerturn("player2", player2Score, scanner, deck, player2Hand);
             player2Score = calculateScore(player2Hand);
             if (player2Score >= WINNINGSCORE) {
                 System.out.println("Player 2 wins!");
@@ -67,30 +67,42 @@ public class FivehundreRomi {
 
         }
         System.out.println("Player 1's hand:");
-        printTypeandValue(player1Hand);
+        getCardTypeAndValueArrayList(player1Hand);
         System.out.println("\n");
         System.out.println("Player 2's hand:");
-        printTypeandValue(player2Hand);
+        getCardTypeAndValueArrayList(player2Hand);
     }
 
-    public static void printTypeandValue(ArrayList<Integer> cards) {
+    public static String getCardTypeAndValueArrayList(ArrayList<Integer> cards) {
         String[] suits = {"Clubs", "Diamonds", "Hearts", "Spades"};
         String[] ranks = {"A", "2", "3", "4", "5", "6", "7", "8", "9", "10", "J", "Q", "K"};
+        Collections.sort(cards);
+        StringBuilder playerHandString = new StringBuilder();
         for (int card : cards) {
             int suit = card / 13;
             int rank = card % 13;
-            System.out.print("Card: " + ranks[rank] + " of " + suits[suit]);
+            playerHandString.append(ranks[rank]).append(" ").append(suits[suit]).append(" ");
         }
+        return playerHandString.toString();
     }
 
-    public static int playerturn(int playerScore, Scanner scanner, int[] deck, ArrayList<Integer> playerHand) {
+    public static String getCardTypeAndValueSingular(int card) {
+        String[] suits = {"Clubs", "Diamonds", "Hearts", "Spades"};
+        String[] ranks = {"A", "2", "3", "4", "5", "6", "7", "8", "9", "10", "J", "Q", "K"};
+        int suit = card / 13;
+        int rank = card % 13;
+        return ("Card: " + ranks[rank] + " " + suits[suit]);
+    }
+
+    public static int playerturn(String playerName, int playerScore, Scanner scanner, int[] deck, ArrayList<Integer> playerHand) {
         // display current players name and score
         boolean hasPickedUpPile = false;
-        System.out.println("Player's turn. Current score: " + playerScore);
+        System.out.println(playerName + "Current score: " + playerScore);
+        System.out.println("Your hand: " + ANSI_GREEN + getCardTypeAndValueArrayList(playerHand) + ANSI_RESET); //make space between cards
         while (true) {
             int lastCardInDiscardPile = discardPile.get(discardPile.size() - 1);
             System.out.println("Do you want to (1) draw from deck or (2) draw from discard pile or (3) Pick ud the whole pile? (Enter 1, 2 or 3)");
-            System.out.println("Top card of discard pile: " + ANSI_GREEN + printTypeandValue(lastCardInDiscardPile) + ANSI_RESET);
+            System.out.println("Top card of discard pile: " + ANSI_GREEN + getCardTypeAndValueSingular(lastCardInDiscardPile) + ANSI_RESET);
             int choice = scanner.nextInt();
             if (choice == 1) {
                 System.out.println("you drew from deck" + ANSI_GREEN + deck[counterForDeck] + ANSI_RESET);
